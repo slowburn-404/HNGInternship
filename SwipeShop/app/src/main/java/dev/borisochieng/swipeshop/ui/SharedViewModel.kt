@@ -2,14 +2,15 @@ package dev.borisochieng.swipeshop.ui
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dev.borisochieng.swipeshop.data.Product
 import dev.borisochieng.swipeshop.data.ProductRepository
-import java.util.UUID
+import kotlinx.coroutines.launch
 
 class SharedViewModel(
     private val productsRepository: ProductRepository
-) {
+) : ViewModel() {
     private val _productsList =  MutableLiveData<List<Product>>()
     val productsList: LiveData<List<Product>> get() = _productsList
 
@@ -27,11 +28,15 @@ class SharedViewModel(
             }
         }
 
-    fun addProductToCart(id: UUID) =
+    fun addProductToCart(position: Int) =
         viewModelScope.launch{
             try {
-             //TODO add selected product to _cartItems
+                val currentCartItems = _cartItems.value!!.toMutableList()
 
+                val selectedProduct = _productsList.value!![position]
+                selectedProduct.isAddedToCart = !selectedProduct.isAddedToCart
+                currentCartItems.add(selectedProduct)
+                _cartItems.value = currentCartItems
             }
             catch (e: Exception) {
                 e.printStackTrace()
@@ -46,12 +51,9 @@ class SharedViewModel(
                _cartItems.value = _productsList.value!!.filter { product ->
                    product.isAddedToCart
                }
-
            }
            catch (e: Exception){
               e.printStackTrace()
            }
         }
-
-
 }
