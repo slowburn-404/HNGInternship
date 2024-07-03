@@ -29,14 +29,10 @@ import dev.borisochieng.swipeshop.MainActivity
 
 @Composable
 fun ConfirmOrderScreen(navController: NavHostController, onClick: () -> Unit) {
-
-    val context = LocalContext.current
-
     //listen for back button press
-    val backPressedDispatcher = (context as MainActivity).onBackPressedDispatcher
 
-    val backCallback = rememberUpdatedState {
-        //clear cart and navigate up
+    val backPressCallback = rememberUpdatedState {
+        //clear cart
         onClick()
 
         navController.navigate(BottomNavScreen.Products.route) {
@@ -48,7 +44,7 @@ fun ConfirmOrderScreen(navController: NavHostController, onClick: () -> Unit) {
     }
 
     BackHandler {
-        backCallback.value()
+        backPressCallback.value()
     }
 
 

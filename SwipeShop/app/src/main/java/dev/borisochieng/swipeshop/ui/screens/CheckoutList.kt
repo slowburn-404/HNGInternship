@@ -13,6 +13,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Text
@@ -42,7 +43,7 @@ fun CheckoutList(modifier: Modifier, cartProducts: List<Product>, onButtonClick:
         }
     } else {
 
-        Column(
+        Box (
             modifier = modifier
                 .fillMaxSize()
                 .verticalScroll(scrollState)
@@ -50,8 +51,8 @@ fun CheckoutList(modifier: Modifier, cartProducts: List<Product>, onButtonClick:
         ) {
             LazyColumn(
                 modifier = Modifier
-                    .height(300.dp)
-                    .fillMaxWidth(),
+                    .fillMaxWidth()
+                    .height(480.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ){
                 items(cartProducts) { product ->
@@ -64,11 +65,14 @@ fun CheckoutList(modifier: Modifier, cartProducts: List<Product>, onButtonClick:
 
             Button(
                 onClick = onButtonClick,
-                modifier = Modifier.
-                    padding(16.dp)
+                modifier = Modifier
+                    //padding(6.dp)
                     .fillMaxWidth()
-                    .align(Alignment.CenterHorizontally),
+                    .align(Alignment.BottomEnd),
                 shape = RoundedCornerShape(10.dp),
+                elevation = ButtonDefaults.buttonElevation(
+                    defaultElevation = 8.dp
+                )
             ) {
                 Text(
                     modifier = Modifier.padding(10.dp),

@@ -41,17 +41,20 @@ fun BottomNavGraph(
             )
         }
         composable(route = "confirm_order") {
-            ConfirmOrderScreen(navController = navController,onClick = {
+            ConfirmOrderScreen(navController = navController, onClick = {
                 //remove products from cart and badge count
                 cartProducts.forEach { product ->
                     viewModel.updateProducts(product.copy(isAddedToCart = false))
                 }
-                //navigate to confirm order screen
-                navController.navigate(BottomNavScreen.Products.route) {
-                    popUpTo(BottomNavScreen.Products.route) {
-                        inclusive = true
+
+                if (cartProducts.isEmpty()) {
+                    //navigate to confirm order screen
+                    navController.navigate(BottomNavScreen.Products.route) {
+                        popUpTo(BottomNavScreen.Products.route) {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
                     }
-                    launchSingleTop = true
                 }
             })
         }
