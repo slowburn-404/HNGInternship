@@ -48,7 +48,7 @@ fun BottomNavGraph(
                 }
 
                 if (cartProducts.isEmpty()) {
-                    //navigate to confirm order screen
+                    //navigate to products screen
                     navController.navigate(BottomNavScreen.Products.route) {
                         popUpTo(BottomNavScreen.Products.route) {
                             inclusive = true
