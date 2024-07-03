@@ -12,6 +12,7 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.currentCompositionErrors
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
@@ -19,6 +20,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dev.borisochieng.swipeshop.ui.SharedViewModel
 import dev.borisochieng.swipeshop.ui.theme.SwipeShopTheme
@@ -31,10 +33,18 @@ fun MainScreen(viewModel: SharedViewModel) {
         BottomNavScreen.Products,
         BottomNavScreen.CheckOut
     )
-    var selectedItemIndex by rememberSaveable {
-        mutableIntStateOf(0)
-    }
-    val badgeCount by viewModel.badgeCount.observeAsState(initial = null)
+
+    //get current route from back stack entry
+    val navCurrentBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute =
+        navCurrentBackStackEntry?.destination?.route ?: BottomNavScreen.Products.route
+
+    //get selected index based on current route
+    val selectedItemIndex = screens.indexOfFirst {
+        it.route == currentRoute
+    }. takeIf { it >= 0 } ?: 0
+    val badgeCount by viewModel.badgeCount.observeAsState(initial = 0)
+
     Scaffold(
         topBar = {
             MediumTopAppBar(
@@ -52,10 +62,13 @@ fun MainScreen(viewModel: SharedViewModel) {
                     NavigationBarItem(
                         selected = selectedItemIndex == index,
                         onClick = {
-                            selectedItemIndex = index
-                            navController.navigate(bottomNavScreen.route) {
-                                popUpTo(navController.graph.startDestinationId)
-                                launchSingleTop = true
+                            if (selectedItemIndex != index) {
+                                navController.navigate(bottomNavScreen.route) {
+                                    popUpTo(navController.graph.startDestinationId) {
+                                        inclusive = false
+                                    }
+                                    launchSingleTop = true
+                                }
                             }
                         },
                         label = {
@@ -64,7 +77,7 @@ fun MainScreen(viewModel: SharedViewModel) {
                         alwaysShowLabel = false,
                         icon = {
                             //show badge only on checkout
-                            if (bottomNavScreen.route == BottomNavScreen.CheckOut.route && badgeCount != null) {
+                            if (bottomNavScreen.route == BottomNavScreen.CheckOut.route && badgeCount > 0) {
                                 BadgedBox(
                                     badge = {
                                         Badge {

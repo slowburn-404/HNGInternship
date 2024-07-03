@@ -18,13 +18,15 @@ sealed class BottomNavScreen(
         route = "products",
         title = "Products",
         selectedIcon = Icons.Filled.Home,
-        unselectedIcon = Icons.Outlined.Home
+        unselectedIcon = Icons.Outlined.Home,
+        badgeCount = null
     )
     data object CheckOut : BottomNavScreen(
         route = "checkout",
         title = "Checkout",
         selectedIcon = Icons.Filled.ShoppingCart,
-        unselectedIcon = Icons.Outlined.ShoppingCart
+        unselectedIcon = Icons.Outlined.ShoppingCart,
+        badgeCount = null
     )
 
 }
