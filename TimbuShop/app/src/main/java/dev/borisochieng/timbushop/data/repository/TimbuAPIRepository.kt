@@ -1,6 +1,6 @@
 package dev.borisochieng.timbushop.data.repository
 
-import dev.borisochieng.timbushop.data.Resource
+import dev.borisochieng.timbushop.data.NetworkResponse
 import dev.borisochieng.timbushop.data.models.ProductResponse
 import dev.borisochieng.timbushop.data.retrofit.RetrofitClient.timbuAPIService
 import kotlinx.coroutines.Dispatchers
@@ -11,20 +11,20 @@ class TimbuAPIRepository{
         apiKey: String,
         organizationID: String,
         appID: String
-    ): Resource<ProductResponse> =
+    ): NetworkResponse<ProductResponse> =
         withContext(Dispatchers.IO) {
                 try{
                     val response = timbuAPIService.getProducts(apiKey, organizationID, appID)
 
                     if(response.isSuccessful) {
-                        Resource.Success(response.body())
+                        NetworkResponse.Success(response.body())
                     } else {
-                        Resource.Error(response.message())
+                        NetworkResponse.Error(response.message())
                     }
                 }
                 catch(e:Exception){
                     e.printStackTrace()
-                    Resource.Error(e.message ?: "An error occurred")
+                    NetworkResponse.Error(e.message ?: "An error occurred")
                 }
         }
 }

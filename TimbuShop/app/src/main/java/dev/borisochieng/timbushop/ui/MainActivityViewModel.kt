@@ -3,7 +3,7 @@ package dev.borisochieng.timbushop.ui
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import dev.borisochieng.timbushop.data.Resource
+import dev.borisochieng.timbushop.data.NetworkResponse
 import dev.borisochieng.timbushop.data.repository.TimbuAPIRepository
 import dev.borisochieng.timbushop.util.Constants.API_KEY
 import dev.borisochieng.timbushop.util.Constants.APP_ID
@@ -18,9 +18,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.text.NumberFormat
-import java.util.Currency
-import java.util.Locale
 
 class MainActivityViewModel(private val timbuAPIRepository: TimbuAPIRepository) : ViewModel() {
 
@@ -59,7 +56,7 @@ class MainActivityViewModel(private val timbuAPIRepository: TimbuAPIRepository) 
             )
 
             when (productsResponse) {
-                is Resource.Success -> {
+                is NetworkResponse.Success -> {
                     _uiState.update {
                         it.copy(
                             isLoading = false,
@@ -69,7 +66,7 @@ class MainActivityViewModel(private val timbuAPIRepository: TimbuAPIRepository) 
                     }
                 }
 
-                is Resource.Error -> {
+                is NetworkResponse.Error -> {
                     _uiState.update {
                         it.copy(
                             isLoading = false,
