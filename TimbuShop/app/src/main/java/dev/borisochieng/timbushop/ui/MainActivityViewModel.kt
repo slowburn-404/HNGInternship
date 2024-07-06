@@ -85,20 +85,10 @@ class MainActivityViewModel(private val timbuAPIRepository: TimbuAPIRepository) 
                         )
                     )
                 }
-
             }
 
 
         }
-
-    fun formatCurrencyWithoutDecimals(amount: Any, locale: Locale = Locale.getDefault()): String {
-        val currencyFormatINKES = NumberFormat.getCurrencyInstance(locale).apply {
-            currency = Currency.getInstance("KES")
-            minimumFractionDigits = 0
-            maximumFractionDigits = 0
-        }
-        return currencyFormatINKES.format(amount)
-    }
 }
 
 

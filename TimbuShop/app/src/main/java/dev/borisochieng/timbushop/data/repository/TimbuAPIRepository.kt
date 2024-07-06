@@ -6,7 +6,7 @@ import dev.borisochieng.timbushop.data.retrofit.RetrofitClient.timbuAPIService
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class TimbuAPIRepository() {
+class TimbuAPIRepository{
     suspend fun getProducts(
         apiKey: String,
         organizationID: String,

@@ -18,7 +18,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Refresh
 import androidx.compose.material3.Card
@@ -32,6 +34,8 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshContainer
+import androidx.compose.material3.pulltorefresh.rememberPullToRefreshState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -41,6 +45,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
@@ -97,7 +102,7 @@ class MainActivity : ComponentActivity() {
                     Content(
                         uiState = uiState,
                         innerPadding = innerPadding,
-                        onRetryClick = {
+                        onRefresh = {
                             mainActivityViewModel.getProducts(
                                 apiKey = API_KEY,
                                 organizationID = ORGANIZATION_ID,
@@ -115,7 +120,7 @@ class MainActivity : ComponentActivity() {
 fun Content(
     uiState: UIState,
     innerPadding: PaddingValues,
-    onRetryClick: () -> Unit
+    onRefresh: () -> Unit
 ) {
     if (uiState.isLoading && uiState.errorMessage.isEmpty()) {
         Box(
@@ -130,30 +135,67 @@ fun Content(
         ProductsList(
             productsList = uiState.products,
             modifier = Modifier.padding(innerPadding),
-            onRetryClick = onRetryClick
+            onRefresh = onRefresh,
+            isRefreshing = uiState.isLoading
         )
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProductsList(
     productsList: List<Product>,
     modifier: Modifier,
-    onRetryClick: () -> Unit
+    onRefresh: () -> Unit,
+    lazyListState: LazyListState = rememberLazyListState(),
+    isRefreshing: Boolean
 ) {
+    val pullToRefreshState = rememberPullToRefreshState()
     if (productsList.isNotEmpty()) {
-        LazyColumn(
-            modifier = modifier.fillMaxSize(),
-            contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        Box(
+            modifier = modifier
+                .fillMaxSize()
+                .nestedScroll(pullToRefreshState.nestedScrollConnection)
         ) {
-            items(productsList) { product ->
-                ProductItem(product = product)
+            LazyColumn(
+                state = lazyListState,
+                modifier = Modifier.fillMaxSize(),
+                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                items(productsList) { product ->
+                    ProductItem(product = product)
+                }
             }
+
+            //Refresh
+            if (pullToRefreshState.isRefreshing) {
+                LaunchedEffect(true) {
+                    onRefresh()
+                }
+            }
+
+
+            LaunchedEffect(isRefreshing) {
+                if (isRefreshing) {
+                    pullToRefreshState.startRefresh()
+                } else {
+                    pullToRefreshState.endRefresh()
+                }
+
+            }
+
+            PullToRefreshContainer(
+                state = pullToRefreshState,
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+            )
         }
+
+
     } else {
-        EmptyState(modifier = modifier, onRetryClick = onRetryClick)
+        EmptyState(modifier = modifier, onRetryClick = onRefresh)
     }
 }
 
@@ -239,7 +281,7 @@ fun CardHeader(product: Product, modifier: Modifier) {
             modifier = Modifier
                 .padding(top = 4.dp, bottom = 4.dp, end = 4.dp)
                 .align(Alignment.CenterVertically),
-            text = if (product.isAvailable) "In Stock (${product.availableQuantity})" else "Sold out",
+            text = if (product.isAvailable) "In Stock" else "Sold out",
             style = MaterialTheme.typography.bodyMedium,
             color = if (product.isAvailable) Color.Gray else MaterialTheme.colorScheme.error
         )
@@ -252,6 +294,11 @@ fun CardHeader(product: Product, modifier: Modifier) {
 @Composable
 fun GreetingPreview() {
     TimbuShopTheme {
-        ProductsList(productsList = emptyList(), modifier = Modifier, onRetryClick = {})
+        ProductsList(
+            productsList = emptyList(),
+            modifier = Modifier,
+            onRefresh = {},
+            isRefreshing = false
+        )
     }
 }
