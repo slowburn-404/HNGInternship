@@ -62,6 +62,7 @@ import dev.borisochieng.timbushop.util.Constants.BASE_IMAGE_URL
 import dev.borisochieng.timbushop.util.Constants.ORGANIZATION_ID
 import dev.borisochieng.timbushop.util.UIEvents
 import dev.borisochieng.timbushop.util.UIState
+import kotlin.math.roundToInt
 
 class MainActivity : ComponentActivity() {
     private val mainActivityViewModel: MainActivityViewModel by viewModels {
@@ -281,9 +282,9 @@ fun CardHeader(product: Product, modifier: Modifier) {
             modifier = Modifier
                 .padding(top = 4.dp, bottom = 4.dp, end = 4.dp)
                 .align(Alignment.CenterVertically),
-            text = if (product.isAvailable) "In Stock" else "Sold out",
+            text = if (product.availableQuantity?.roundToInt()!! > 0) "In Stock (${product.availableQuantity.roundToInt()})" else "Sold out",
             style = MaterialTheme.typography.bodyMedium,
-            color = if (product.isAvailable) Color.Gray else MaterialTheme.colorScheme.error
+            color = if (product.availableQuantity.roundToInt() > 0) Color.Gray else MaterialTheme.colorScheme.error
         )
 
     }

@@ -28,7 +28,7 @@ data class Product(
     @SerializedName("prices") val prices: Any?,
     @SerializedName("stocks") val stocks: Any?,
     @SerializedName("is_deleted") val isDeleted: Boolean,
-    @SerializedName("available_quantity") val availableQuantity: Any?,
+    @SerializedName("available_quantity") val availableQuantity: Float?,
     @SerializedName("selling_price") val sellingPrice: Any?,
     @SerializedName("discounted_price") val discountedPrice: Any?,
     @SerializedName("buying_price") val buyingPrice: Any?,
