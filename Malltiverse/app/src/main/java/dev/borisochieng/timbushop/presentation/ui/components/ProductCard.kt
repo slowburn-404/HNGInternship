@@ -1,5 +1,6 @@
 package dev.borisochieng.timbushop.presentation.ui.components
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,7 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -56,11 +59,12 @@ fun ProductCard(
                     .fillMaxWidth()
                     .background(colorScheme.container)
                     .clip(shape.card)
-                    .height(180.dp)
+                    .height(180.dp),
+                contentAlignment = Alignment.Center
             ) {
                 AsyncImage(
                     modifier = Modifier
-                        .padding(24.dp),
+                        .padding(6.dp),
                     model = ImageRequest
                         .Builder(LocalContext.current)
                         .data(product.imageURL)
@@ -78,26 +82,35 @@ fun ProductCard(
             ) {
                 Text(
                     modifier = Modifier
-                        .padding(4.dp)
+                        .padding(horizontal = 8.dp, vertical = 4.dp)
                         .fillMaxWidth(),
                     text = product.name,
-                    style = MalltiverseTheme.typography.bodyLarge,
+                    style = MalltiverseTheme.typography.body,
                     color = colorScheme.onBackground,
+                    fontWeight = FontWeight.SemiBold
                 )
 
                 Text(
-                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
+                    modifier = Modifier.padding(horizontal = 8.dp, vertical = 2.dp),
                     text = product.description,
-                    style = MalltiverseTheme.typography.body,
+                    style = MalltiverseTheme.typography.bodySmall,
                     color = colorScheme.onBackground,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
 
+                Image(
+                    painter = painterResource(id = R.drawable.stars),
+                    contentDescription = "Rating",
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp, vertical = 2.dp)
+                        .align(Alignment.Start)
+                )
+
                 Text(
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
                     text = product.price,
-                    style = MalltiverseTheme.typography.labelNormal,
+                    style = MalltiverseTheme.typography.bodySmall,
                     color = colorScheme.primary
                 )
 
@@ -110,18 +123,4 @@ fun ProductCard(
             }
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProductCardPreview() {
-    val fakeProduct = DomainProduct(
-        name = "Joystick Game Controller",
-        description = "Wired UCOM USB Pad",
-        price = "N 11,250",
-        imageURL = "unsplash.com",
-        category = emptyList()
-    )
-    ProductCard(modifier = Modifier, product = fakeProduct, onClick = {})
-
 }

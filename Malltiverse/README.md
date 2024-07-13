@@ -2,7 +2,7 @@
 A simple Android application that consumes the [Timbu API](https://docs.timbu.cloud/api/intro) and displays the response in a list.
 
 ## Demo
-- [Appetize](https://appetize.io/app/b_fhezgnwkx5gbkzohck4bczvsci)
+- [Appetize](https://appetize.io/app/b_j6wju4c2hsenfvoin7ebbnfide)
 - Go to releases for the [APK](https://github.com/slowburn-404/HNGInternship/releases/tag/v1.0.0)
 
 ## Features

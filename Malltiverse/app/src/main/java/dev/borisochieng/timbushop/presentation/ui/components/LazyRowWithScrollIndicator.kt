@@ -66,15 +66,15 @@ fun LazyRowWithScrollIndicator(
         Text(
             text = categoryName,
             modifier = Modifier
-                .padding(vertical = 8.dp)
                 .fillMaxWidth(),
             style = MalltiverseTheme.typography.titleLarge
         )
 
         LazyRow(
             modifier = Modifier
-                .height(350.dp)
-                .fillMaxWidth(),
+                .height(360.dp)
+                .fillMaxWidth()
+                .padding(vertical = 8.dp),
             state = lazyListState
         ) {
             items(products) { product ->
@@ -88,7 +88,7 @@ fun LazyRowWithScrollIndicator(
     }
 
     // Scroll indicator as dots
-    val dotCount = 3
+    val dotCount = products.size
     val dotSize = 10.dp
     val dotSpacing = 4.dp
     val dotBorderWidth = 1.dp
