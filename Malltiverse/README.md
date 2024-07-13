@@ -1,13 +1,15 @@
-## TimbuShop
+## Malltiverse
 A simple Android application that consumes the [Timbu API](https://docs.timbu.cloud/api/intro) and displays the response in a list.
+
+## Wireframes
+- [Figma](ma.com/design/QHq9WbFOHgdDRhPuLOTNvB/HNG-INTERNSHIP?node-id=142-292&t=SNi8Blw1RY6Mco1q-0)
 
 ## Demo
 - [Appetize](https://appetize.io/app/b_j6wju4c2hsenfvoin7ebbnfide)
-- Go to releases for the [APK](https://github.com/slowburn-404/HNGInternship/releases/tag/v1.0.0)
+- Go to releases for the [APK](https://github.com/slowburn-404/HNGInternship/releases/tag/v1.0.1(Malltiverse))
 
 ## Features
-- List products.
-- Pull to refresh.
+- List products by category.
 
 ## Architecture Overview
 - The application utilizes the Model-View-ViewModel (MVVM) architecture pattern. The Model ([Data layer](app/src/main/java/dev/borisochieng/timbushop/data/)) is responsible for data retrieval from the API and uses the repository pattern.
@@ -27,10 +29,7 @@ A simple Android application that consumes the [Timbu API](https://docs.timbu.cl
 - **[ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)**: A lifecycle-aware Android Architecture Component for holding state.
 
 ## Screenshots
-
-| Light | Dark |
-|:---:|:---:|
-| ![Light](screenshots/light-products.jpg) | ![Dark](screenshots/dark-products.jpg) |
+![Malltiverse](screenshots/malltiverse.jpg)
 
 ## Setup Instructions
 
@@ -49,29 +48,7 @@ cd HNGInternship/TimbuShop
 - Follow this [guide](https://docs.timbu.cloud/api/Api-Keys/create-apikeys) to retrieve your API Key and App ID.
 
 4. **Retrieve the `organization_id`**
-- For some reason, the documentation or the Timbu dashboard does not provide the value of the organization ID, which is an argument passed to the `organization_id` URL parameter required when making the API call. We will need to find a workaround to get it.
-- Head over to the Timbu dashboard.
-- In the side menu, select Products.
-
-![Sidebar](screenshots/sidebar.png)
-
-- Open Developer Tools in your browser by hitting the `F12` key or right-clicking anywhere on the page and selecting `Inspect`.
-
-![Dev Tools](screenshots/dev-tools.png)
-
-- At the top right, you will see tabs named Elements, Recorder, etc. Click on the arrow and select Network.
-
-- Now we will inspect the HTTP responses from the network. Select `Fetch/XHR` to view all JSON files we get from the network call.
-
-![Fetch XHR](screenshots/fetch.png)
-
-- Refresh the web page, and you will notice the empty field below being updated.
-
-![Json](screenshots/jsons.png)
-
-- Scroll down and try to find the JSON file whose name starts with `products?organization_id=`. Click on it and view the details.
-- Within the file, locate the value assigned to the `organization_id` property. That is your organization ID.
-
+- On your Timbu Dashboard, navigate to Settings > Advanced and you will find your Organization ID.
 - In the root directory of your project, add the API Key, App ID, and the Organization ID to the `local.properties` file.
 
 ```
