@@ -38,11 +38,11 @@ fun BottomNavBar(
         composable(route = NavItems.Checkout.route) {
             CheckoutScreen(innerPadding = innerPadding)
         }
-        composable(route = NavItems.Payment.route) {
-            PaymentScreen(innerPadding = innerPadding)
-        }
-        composable(route = NavItems.PaymentSuccess.route) {
-            PaymentSuccessfulScreen(innerPadding = innerPadding, navController = navController, onClick = {})
-        }
+//        composable(route = NavItems.Payment.route) {
+//            PaymentScreen(innerPadding = innerPadding)
+//        }
+//        composable(route = NavItems.PaymentSuccess.route) {
+//            PaymentSuccessfulScreen(innerPadding = innerPadding, navController = navController, onClick = {})
+//        }
     }
 }

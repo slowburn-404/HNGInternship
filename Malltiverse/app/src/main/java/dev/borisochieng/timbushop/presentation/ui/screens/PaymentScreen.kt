@@ -8,7 +8,7 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun PaymentScreen(
-    innerPadding: PaddingValues
+    innerPadding: PaddingValues,
 ) {
     Text(
         modifier = Modifier.padding(innerPadding),

@@ -63,8 +63,8 @@ class MainActivity : ComponentActivity() {
                 NavItems.Home,
                 NavItems.Cart,
                 NavItems.Checkout,
-                NavItems.Payment,
-                NavItems.PaymentSuccess
+//                NavItems.Payment,
+//                NavItems.PaymentSuccess
             )
 
             val navCurrentBackStackEntry by navController.currentBackStackEntryAsState()

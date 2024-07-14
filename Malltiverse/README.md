@@ -29,7 +29,7 @@ A simple Android application that consumes the [Timbu API](https://docs.timbu.cl
 - **[ViewModel](https://developer.android.com/topic/libraries/architecture/viewmodel)**: A lifecycle-aware Android Architecture Component for holding state.
 
 ## Screenshots
-![Malltiverse](screenshots/malltiverse.jpg)
+![Malltiverse](screenshots/malltiverse.png)
 
 ## Setup Instructions
 

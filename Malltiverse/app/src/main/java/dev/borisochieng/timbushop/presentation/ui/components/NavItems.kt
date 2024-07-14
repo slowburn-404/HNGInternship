@@ -19,15 +19,15 @@ sealed class NavItems(
         title = "Checkout"
     )
 
-    data object Payment : NavItems(
-        route = "payment",
-        title = "Payment"
-    )
-
-    data object PaymentSuccess : NavItems(
-        route = "payment_success",
-        title = "Payment Success"
-    )
+//    data object Payment : NavItems(
+//        route = "payment",
+//        title = "Payment"
+//    )
+//
+//    data object PaymentSuccess : NavItems(
+//        route = "payment_success",
+//        title = "Payment Success"
+//    )
 
 
 }
