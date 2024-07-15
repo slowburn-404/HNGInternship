@@ -4,7 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import dev.borisochieng.timbushop.data.NetworkResponse
-import dev.borisochieng.timbushop.data.repository.TimbuAPIRepositoryImpl
 import dev.borisochieng.timbushop.domain.TimbuAPIRepository
 import dev.borisochieng.timbushop.domain.models.DomainProduct
 import dev.borisochieng.timbushop.util.Constants.API_KEY
@@ -33,6 +32,9 @@ class MainActivityViewModel(private val timbuAPIRepository: TimbuAPIRepository) 
 
     private val _categories = MutableStateFlow<Map<String, List<DomainProduct>>>(emptyMap())
     val categories: StateFlow<Map<String, List<DomainProduct>>> get() = _categories.asStateFlow()
+
+    private val _cartItems = MutableStateFlow<List<DomainProduct>>(emptyList())
+    val cartItems: StateFlow<List<DomainProduct>> get() = _cartItems.asStateFlow()
 
     init {
         getProducts(
@@ -66,6 +68,8 @@ class MainActivityViewModel(private val timbuAPIRepository: TimbuAPIRepository) 
                 is NetworkResponse.Success -> {
                     val allProducts = productsResponse.payLoad ?: emptyList()
 
+                    val cartItems = getCartItems(allProducts)
+
                     withContext(Dispatchers.Default) {
                         val groupedProductsByCategory = allProducts.flatMap { product ->
                             product.category.map { category ->
@@ -75,6 +79,10 @@ class MainActivityViewModel(private val timbuAPIRepository: TimbuAPIRepository) 
 
                         withContext(Dispatchers.Main) {
                             _categories.update { groupedProductsByCategory }
+                            _cartItems.update { cartItems }
+                            _uiState.update {
+                                it.copy(isLoading = false, products = allProducts)
+                            }
                         }
                     }
 
@@ -104,7 +112,47 @@ class MainActivityViewModel(private val timbuAPIRepository: TimbuAPIRepository) 
 
 
         }
+
+    fun toggleCart(product: DomainProduct) = viewModelScope.launch {
+        val allProducts = _uiState.value.products.map { p ->
+            if (p.id == product.id) {
+                p.copy(isAddedToCart = !p.isAddedToCart, quantity = if (p.isAddedToCart) 0 else 1)
+            } else {
+                p
+            }
+        }
+
+        _uiState.value = _uiState.value.copy(
+            products = allProducts)
+
+        _uiState.update {
+            it.copy(products = allProducts)
+        }
+        _cartItems.update {
+            allProducts.filter { it.isAddedToCart }
+        }
+    }
+
+    fun updateQuantity(product: DomainProduct, newQuantity: Int) =
+        viewModelScope.launch {
+            val updatedCartItems = _cartItems.value.map {
+                if (it.id == product.id) {
+                    it.copy(quantity = newQuantity)
+                } else {
+                    it
+                }
+            }
+
+            _cartItems.update { updatedCartItems }
+        }
+
 }
+
+
+private fun getCartItems(cartItems: List<DomainProduct>): List<DomainProduct> =
+    cartItems.filter { product ->
+        product.isAddedToCart
+    }
 
 
 class MainActivityViewModelFactory(private val timbuAPIRepository: TimbuAPIRepository) :

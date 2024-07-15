@@ -1,30 +1,30 @@
 package dev.borisochieng.timbushop.presentation.ui.components
 
-sealed class NavItems(
+sealed class BottomNavItems(
     val route: String,
     val title: String
 ) {
-    data object Home : NavItems(
+    data object Home : BottomNavItems(
         route = "home",
         title = "Product List"
     )
 
-    data object Cart : NavItems(
+    data object Cart : BottomNavItems(
         route = "cart",
         title = "My Cart"
     )
 
-    data object Checkout : NavItems(
+    data object Checkout : BottomNavItems(
         route = "checkout",
         title = "Checkout"
     )
 
-//    data object Payment : NavItems(
+//    data object Payment : BottomNavItems(
 //        route = "payment",
 //        title = "Payment"
 //    )
 //
-//    data object PaymentSuccess : NavItems(
+//    data object PaymentSuccess : BottomNavItems(
 //        route = "payment_success",
 //        title = "Payment Success"
 //    )

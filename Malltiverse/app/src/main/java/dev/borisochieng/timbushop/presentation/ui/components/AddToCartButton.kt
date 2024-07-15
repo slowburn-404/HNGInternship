@@ -9,6 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.borisochieng.timbushop.domain.models.DomainProduct
 import dev.borisochieng.timbushop.presentation.ui.theme.MalltiverseTheme
 
 @Composable
@@ -18,6 +19,7 @@ fun AddToCartButton(
     onClick: () -> Unit
 ) {
     OutlinedButton(
+        modifier = modifier,
         onClick = onClick,
         colors = ButtonDefaults.outlinedButtonColors(
             contentColor = MalltiverseTheme.colorScheme.onBackground
@@ -38,5 +40,5 @@ fun AddToCartButton(
 @Preview(showBackground = true, backgroundColor = 0xFFFFFFFF)
 @Composable
 fun AddToCartButtonPreview() {
-    AddToCartButton(modifier = Modifier, label = "Add to cart", onClick = {})
+    AddToCartButton(label = "Add to cart", onClick = {}, modifier = Modifier)
 }

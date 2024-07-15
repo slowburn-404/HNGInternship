@@ -11,6 +11,7 @@ import java.util.Locale
 fun ProductResponse.toDomainProduct(): List<DomainProduct> =
     items.map { product ->
         DomainProduct(
+            id = product.id,
             name = product.name,
             description = product.description ?: "No description available",
             price = formatCurrency(
@@ -22,7 +23,9 @@ fun ProductResponse.toDomainProduct(): List<DomainProduct> =
                 DomainCategory(
                     name = category.name.capitalizeWords(),
                 )
-            } ?: emptyList()
+            } ?: emptyList(),
+            availableQuantity = product.availableQuantity?.toInt() ?: 0,
+            quantity = 0
         )
     }
 
@@ -31,9 +34,16 @@ fun String.capitalizeWords(): String =
         .joinToString(" ") { it.replaceFirstChar { char -> char.uppercase() } }
 
 
-fun formatCurrency(value: Any, currencyCode: String): String {
+fun formatCurrency(value: Any, currencyCode: String): Double {
     val numberFormat = NumberFormat.getCurrencyInstance(Locale.getDefault())
     numberFormat.currency = Currency.getInstance(currencyCode)
     numberFormat.maximumFractionDigits = 0 // Remove decimal places
-    return numberFormat.format(value)
+
+    val formattedString = numberFormat.format(value)
+
+    val cleanedString = formattedString
+        .replace(Regex("[^\\d.]"), "")
+        .toDoubleOrNull() ?: 0.0
+
+    return cleanedString
 }

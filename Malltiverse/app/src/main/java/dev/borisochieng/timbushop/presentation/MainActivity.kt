@@ -13,20 +13,22 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -41,11 +43,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dev.borisochieng.timbushop.TimbuShopApplication
 import dev.borisochieng.timbushop.presentation.ui.components.BottomNavBar
-import dev.borisochieng.timbushop.presentation.ui.components.NavItems
+import dev.borisochieng.timbushop.presentation.ui.components.BottomNavItems
 import dev.borisochieng.timbushop.presentation.ui.components.ScreenTitle
 import dev.borisochieng.timbushop.presentation.ui.components.getIcons
 import dev.borisochieng.timbushop.presentation.ui.theme.MalltiverseTheme
+import dev.borisochieng.timbushop.util.Constants.API_KEY
+import dev.borisochieng.timbushop.util.Constants.APP_ID
+import dev.borisochieng.timbushop.util.Constants.ORGANIZATION_ID
 import dev.borisochieng.timbushop.util.UIEvents
+
 class MainActivity : ComponentActivity() {
     private val mainActivityViewModel: MainActivityViewModel by viewModels {
         MainActivityViewModelFactory((application as TimbuShopApplication).timbuAPIRepositoryImpl)
@@ -60,11 +66,9 @@ class MainActivity : ComponentActivity() {
             val snackBarHostState = remember { SnackbarHostState() }
             val navController = rememberNavController()
             val screens = listOf(
-                NavItems.Home,
-                NavItems.Cart,
-                NavItems.Checkout,
-//                NavItems.Payment,
-//                NavItems.PaymentSuccess
+                BottomNavItems.Home,
+                BottomNavItems.Cart,
+                BottomNavItems.Checkout
             )
 
             val navCurrentBackStackEntry by navController.currentBackStackEntryAsState()
@@ -84,7 +88,44 @@ class MainActivity : ComponentActivity() {
 
             MalltiverseTheme {
                 Scaffold(
-                    snackbarHost = { SnackbarHost(hostState = snackBarHostState) },
+                    snackbarHost = {
+                        SnackbarHost(
+                            hostState = snackBarHostState,
+                            snackbar = {
+                                Snackbar(
+                                    modifier = Modifier
+                                        .padding(16.dp),
+                                    action = {
+
+                                        Button(
+                                            colors = ButtonColors(
+                                                containerColor = MalltiverseTheme.colorScheme.primary,
+                                                contentColor = MalltiverseTheme.colorScheme.onPrimary,
+                                                disabledContainerColor = Color.Gray,
+                                                disabledContentColor = Color.White
+                                            ),
+                                            onClick = {
+                                                mainActivityViewModel.getProducts(
+                                                    apiKey = API_KEY,
+                                                    organizationID = ORGANIZATION_ID,
+                                                    appId = APP_ID
+                                                )
+                                            }
+                                        ) {
+                                            Text(
+                                                text = "Retry",
+                                                style = MalltiverseTheme.typography.labelNormal,
+                                                modifier = Modifier
+                                                    .padding(8.dp)
+                                            )
+                                        }
+                                    }
+                                ) {
+                                    Text(text = uiState.errorMessage)
+                                }
+                            }
+                        )
+                    },
                     modifier = Modifier
                         .fillMaxSize()
                         .windowInsetsPadding(WindowInsets.systemBars),
@@ -141,7 +182,7 @@ class MainActivity : ComponentActivity() {
                                                         shape = CircleShape
                                                     )
                                                     .padding(8.dp),
-                                               // contentAlignment = Alignment.Center
+                                                contentAlignment = Alignment.Center
                                             ) {
                                                 if (icon != null) {
                                                     Icon(
@@ -170,9 +211,9 @@ class MainActivity : ComponentActivity() {
                 ) { innerPadding ->
                     BottomNavBar(
                         navController = navController,
-                        onNavItemClick = {},
                         viewModel = mainActivityViewModel,
-                        innerPadding = innerPadding
+                        innerPadding = innerPadding,
+                        snackBarHostState = snackBarHostState
                     )
                 }
             }

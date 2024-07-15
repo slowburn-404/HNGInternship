@@ -1,4 +1,25 @@
 <resources>
     <string name="app_name">Malltiverse</string>
     <string name="add_to_cart">Add To Cart</string>
+    <string name="remove_from_cart">Remove from cart</string>
+    <string name="shopping_summary">Shopping Summary</string>
+    <string name="discount_code">Discount Code</string>
+    <string name="enter_promo_code">Enter promo code</string>
+    <string name="apply">Apply</string>
+    <string name="sub_total">Sub-Total</string>
+    <string name="delivery_fee">Delivery Fee</string>
+    <string name="discount_amount">Discount Amount</string>
+    <string name="total_amount">Total Amount</string>
+    <string name="checkout">Checkout</string>
+    <string name="no_items_in_cart">No Items In Cart</string>
+    <string name="select_packages">Select how to receive your package(s)</string>
+    <string name="pickup">Pickup</string>
+    <string name="delivery">Delivery</string>
+    <string name="contact">Contact</string>
+    <string name="phone_nos_2">Phone nos 2</string>
+    <string name="phone_nos_1">Phone nos 1</string>
+    <string name="thank_you_for_your_purchase">Thank you for your purchase</string>
+    <string name="payment_successful">Payment Successful</string>
+    <string name="order_confirmed">Order confirmed</string>
+    <string name="go_to_payment">Go to Payment</string>
 </resources>

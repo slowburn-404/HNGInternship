@@ -11,10 +11,13 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -25,11 +28,15 @@ import dev.borisochieng.timbushop.presentation.ui.theme.MalltiverseTheme.colorSc
 import dev.borisochieng.timbushop.util.Constants.API_KEY
 import dev.borisochieng.timbushop.util.Constants.APP_ID
 import dev.borisochieng.timbushop.util.Constants.ORGANIZATION_ID
+import dev.borisochieng.timbushop.util.UIEvents
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
     viewModel: MainActivityViewModel,
     innerPadding: PaddingValues,
+    snackBarHostState: SnackbarHostState
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val categories by viewModel.categories.collectAsState()
@@ -59,7 +66,8 @@ fun HomeScreen(
                 items(categories.keys.toList()) { categoryName ->
                     LazyRowWithScrollIndicator(
                         categoryName = categoryName,
-                        products = categories[categoryName] ?: emptyList()
+                        products = categories[categoryName] ?: emptyList(),
+                        viewModel = viewModel
                     )
                 }
             }
@@ -67,25 +75,15 @@ fun HomeScreen(
         }
 
         if (uiState.errorMessage.isNotEmpty()) {
-            Snackbar(
-                modifier = Modifier
-                    .padding(16.dp),
-                action = {
-                    Button(
-                        onClick = {
-                            viewModel.getProducts(
-                                apiKey = API_KEY,
-                                organizationID = ORGANIZATION_ID,
-                                appId = APP_ID
-                            )
+            LaunchedEffect(Unit) {
+                viewModel.eventFlow.collect{ event->
+                    when(event) {
+                        is UIEvents.SnackBarEvent -> {
+                            snackBarHostState.showSnackbar(event.message)
                         }
-                    ) {
-                        Text("Retry")
-                    }
 
+                    }
                 }
-            ) {
-                Text(text = uiState.errorMessage)
             }
         }
     }
