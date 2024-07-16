@@ -72,6 +72,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.navigation.compose)
     //retrofit
     implementation(libs.retrofit)
     //gson
@@ -83,7 +84,8 @@ dependencies {
     //coil
     implementation(libs.coil)
     implementation(libs.coil.compose)
-    implementation(libs.androidx.navigation.compose)
+    //lottie
+    implementation(libs.lottie)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)

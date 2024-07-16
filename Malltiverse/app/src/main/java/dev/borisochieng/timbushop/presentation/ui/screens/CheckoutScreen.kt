@@ -45,7 +45,7 @@ fun CheckoutScreen(
     innerPadding: PaddingValues,
     navController: NavHostController
 ) {
-    var selected1 by remember { mutableStateOf(false) }
+    var selected1 by remember { mutableStateOf(true) }
     var selected2 by remember { mutableStateOf(false) }
 
     var delivery by remember { mutableStateOf("") }
@@ -82,7 +82,7 @@ fun CheckoutScreen(
                 modifier = Modifier
                     .size(24.dp),
                 selected = selected1,
-                onClick = { if(selected2) selected2 = false ; selected1 = true },
+                onClick = { if (selected2) selected2 = false; selected1 = true },
                 colors = RadioButtonDefaults.colors(
                     selectedColor = MalltiverseTheme.colorScheme.primary,
                     unselectedColor = Color.Gray
@@ -107,7 +107,7 @@ fun CheckoutScreen(
                 modifier = Modifier
                     .size(24.dp),
                 selected = selected2,
-                onClick = { if(selected1) selected1 = false ; selected2 = true },
+                onClick = { if (selected1) selected1 = false; selected2 = true },
                 colors = RadioButtonDefaults.colors(
                     selectedColor = MalltiverseTheme.colorScheme.primary,
                     unselectedColor = Color.Gray
@@ -164,7 +164,7 @@ fun CheckoutScreen(
             onValueChange = { contact1 = it },
             shape = shape.button,
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 6.dp)
                 .width(180.dp)
@@ -175,7 +175,7 @@ fun CheckoutScreen(
                 focusedIndicatorColor = MalltiverseTheme.colorScheme.primary,
                 cursorColor = MalltiverseTheme.colorScheme.primary,
             ),
-            label = {
+            placeholder = {
                 Text(
                     text = stringResource(R.string.phone_nos_1),
                     style = MalltiverseTheme.typography.body,
@@ -189,7 +189,7 @@ fun CheckoutScreen(
             onValueChange = { contact2 = it },
             shape = shape.button,
             singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
             modifier = Modifier
                 .padding(horizontal = 16.dp, vertical = 6.dp)
                 .width(180.dp)
@@ -202,7 +202,7 @@ fun CheckoutScreen(
                 focusedTextColor = MalltiverseTheme.colorScheme.onContainer,
                 unfocusedTextColor = MalltiverseTheme.colorScheme.onContainer
             ),
-            label = {
+            placeholder = {
                 Text(
                     text = stringResource(R.string.phone_nos_2),
                     style = MalltiverseTheme.typography.body,
@@ -221,12 +221,7 @@ fun CheckoutScreen(
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
             onClick = {
-                navController.navigate(OtherNavItems.Payment.route) {
-                    popUpTo(BottomNavItems.Checkout.route) {
-                        inclusive = true
-                    }
-                    launchSingleTop = true
-                }
+                navController.navigate(OtherNavItems.Payment.route)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MalltiverseTheme.colorScheme.primary,

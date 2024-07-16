@@ -126,7 +126,7 @@ fun ShoppingSummary(
                 )
 
                 Text(
-                    text = "$subTotal",
+                    text = "NGN $subTotal",
                     modifier = Modifier
                         .align(Alignment.CenterEnd),
                     fontWeight = FontWeight.SemiBold
@@ -147,7 +147,7 @@ fun ShoppingSummary(
                 )
 
                 Text(
-                    text = "$deliveryFee",
+                    text = "NGN $deliveryFee",
                     modifier = Modifier
                         .align(Alignment.CenterEnd),
                     fontWeight = FontWeight.SemiBold
@@ -168,7 +168,7 @@ fun ShoppingSummary(
                 )
 
                 Text(
-                    text = "$subTotal",
+                    text = "NGN $subTotal",
                     modifier = Modifier
                         .align(Alignment.CenterEnd),
                     fontWeight = FontWeight.SemiBold
@@ -196,7 +196,7 @@ fun ShoppingSummary(
                 )
 
                 Text(
-                    text = "${subTotal + deliveryFee - discount}",
+                    text = "NGN ${subTotal + deliveryFee - discount}",
                     modifier = Modifier
                         .align(Alignment.CenterEnd),
                     fontWeight = FontWeight.SemiBold

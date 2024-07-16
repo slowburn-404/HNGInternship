@@ -15,7 +15,7 @@ fun ProductResponse.toDomainProduct(): List<DomainProduct> =
             name = product.name,
             description = product.description ?: "No description available",
             price = formatCurrency(
-                product.currentPrice.firstOrNull()?.ngn?.first() ?: 0.0,
+                product.currentPrice.firstOrNull()?.ngn?.first() ?: 0f,
                 "NGN"
             ),
             imageURL = "$BASE_IMAGE_URL${product.photos?.firstOrNull()?.url}",

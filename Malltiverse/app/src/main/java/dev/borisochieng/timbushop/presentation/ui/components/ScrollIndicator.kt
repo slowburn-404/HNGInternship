@@ -19,7 +19,7 @@ import dev.borisochieng.timbushop.presentation.ui.theme.MalltiverseTheme
 @Composable
 fun ScrollIndicator(scrollProgress: Float, totalItems: Int) {
     // Scroll indicator as dots
-    val dotCount = 4
+    val dotCount = totalItems
     val dotSize = 10.dp
     val dotSpacing = 4.dp
     val dotBorderWidth = 1.dp

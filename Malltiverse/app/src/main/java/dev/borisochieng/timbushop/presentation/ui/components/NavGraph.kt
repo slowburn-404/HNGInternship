@@ -1,8 +1,10 @@
 package dev.borisochieng.timbushop.presentation.ui.components
 
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -35,10 +37,10 @@ fun BottomNavBar(
             CheckoutScreen(innerPadding = innerPadding, navController = navController)
         }
         composable(route = OtherNavItems.Payment.route) {
-            PaymentScreen(innerPadding = innerPadding)
+            PaymentScreen(innerPadding = innerPadding, navController = navController)
         }
         composable(route = OtherNavItems.PaymentSuccess.route) {
-            PaymentSuccessfulScreen(innerPadding = innerPadding, navController = navController, onClick = {})
+            PaymentSuccessfulScreen(innerPadding = innerPadding, navController = navController, onClick = {} )
         }
     }
 }
