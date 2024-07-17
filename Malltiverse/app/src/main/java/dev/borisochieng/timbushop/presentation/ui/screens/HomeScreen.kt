@@ -8,16 +8,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material3.Button
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -25,12 +22,7 @@ import dev.borisochieng.timbushop.presentation.MainActivityViewModel
 import dev.borisochieng.timbushop.presentation.ui.components.FeaturedCard
 import dev.borisochieng.timbushop.presentation.ui.components.LazyRowWithScrollIndicator
 import dev.borisochieng.timbushop.presentation.ui.theme.MalltiverseTheme.colorScheme
-import dev.borisochieng.timbushop.util.Constants.API_KEY
-import dev.borisochieng.timbushop.util.Constants.APP_ID
-import dev.borisochieng.timbushop.util.Constants.ORGANIZATION_ID
 import dev.borisochieng.timbushop.util.UIEvents
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 @Composable
 fun HomeScreen(
@@ -39,7 +31,9 @@ fun HomeScreen(
     snackBarHostState: SnackbarHostState
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val categories by viewModel.categories.collectAsState()
+    val categories = uiState.categoriesWithProducts
+    val lazyColumnState = rememberLazyListState()
+
     Column(
         modifier = Modifier.padding(innerPadding)
     ) {
@@ -58,12 +52,14 @@ fun HomeScreen(
             }
         } else {
             LazyColumn(
-                modifier = Modifier.padding(vertical = 8.dp),
+                state = lazyColumnState,
+                contentPadding = PaddingValues(vertical = 8.dp)
             ) {
+
                 item {
                     FeaturedCard(modifier = Modifier)
                 }
-                items(categories.keys.toList()) { categoryName ->
+                items(categories.keys.toList(), key = { it } ) { categoryName ->
                     LazyRowWithScrollIndicator(
                         categoryName = categoryName,
                         products = categories[categoryName] ?: emptyList(),

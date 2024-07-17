@@ -40,7 +40,8 @@ fun PaymentSuccessfulScreen(
     onClick: () -> Unit
 ) {
     val composition by rememberLottieComposition(
-        LottieCompositionSpec.RawRes(R.raw.confetti))
+        LottieCompositionSpec.RawRes(R.raw.confetti)
+    )
 
     val progress by animateLottieCompositionAsState(
         composition = composition,
@@ -52,12 +53,7 @@ fun PaymentSuccessfulScreen(
         //clear cart
         onClick()
 
-        navController.navigate(BottomNavItems.Home.route) {
-            popUpTo(BottomNavItems.Home.route) {
-                inclusive = true
-            }
-            launchSingleTop = true
-        }
+        navController.navigate(BottomNavItems.Checkout.route)
     }
 
     BackHandler {

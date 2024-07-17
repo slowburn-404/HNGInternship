@@ -4,5 +4,5 @@ import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class CurrentPrice(
-    @SerializedName("NGN") val ngn: List<Any?>
+    @SerializedName("NGN") val currency: List<Any?>
 ) : Serializable

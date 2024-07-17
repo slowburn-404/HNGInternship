@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -44,7 +43,6 @@ import dev.borisochieng.timbushop.domain.models.DomainProduct
 import dev.borisochieng.timbushop.presentation.ui.theme.MalltiverseTheme
 import dev.borisochieng.timbushop.presentation.ui.theme.MalltiverseTheme.shape
 import java.util.UUID.randomUUID
-import kotlin.time.times
 
 @Composable
 fun CartItem(
@@ -53,7 +51,7 @@ fun CartItem(
     onRemoveFromCart: () -> Unit,
     onQuantityChange: (DomainProduct, Int) -> Unit
 ) {
-    var itemTotalPrice by remember { mutableDoubleStateOf(product.price * product.quantity) }
+    val subTotal by remember { mutableDoubleStateOf(product.price * product.quantity) }
 
     Card(
         modifier = modifier
@@ -195,7 +193,7 @@ fun CartItem(
                         modifier = Modifier
                             .padding(4.dp)
                             .align(Alignment.CenterVertically),
-                        text = "NGN $itemTotalPrice",
+                        text = "₦ $subTotal",
                         style = MalltiverseTheme.typography.body,
                         textAlign = TextAlign.End,
                         fontWeight = FontWeight.SemiBold
@@ -218,7 +216,8 @@ fun CardItemPreview() {
         imageURL = "unsplash.com",
         category = emptyList(),
         availableQuantity = 15,
-        quantity = 1
+        quantity = 1,
+        isAddedToCart = false
     )
     CartItem(
         product = fakeProduct,

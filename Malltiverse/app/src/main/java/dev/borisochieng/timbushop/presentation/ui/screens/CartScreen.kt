@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -31,8 +32,15 @@ fun CartScreen(
     viewModel: MainActivityViewModel,
     innerPadding: PaddingValues
 ) {
-    val cartProducts by viewModel.cartItems.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
+    val cartProducts = uiState.cartItems
+
     var promoCode by remember { mutableStateOf("") }
+
+    val deliveryFee by remember { mutableDoubleStateOf(1500.00) }
+    val discount by remember { mutableDoubleStateOf(1000.00) }
+    val totalAmount  = viewModel.getTotalCartPrice()
+
 
     if(cartProducts.isNotEmpty()) {
         LazyColumn(
@@ -44,8 +52,9 @@ fun CartScreen(
                     onRemoveFromCart = {
                         viewModel.toggleCart(cartItem)
                     },
-                    onQuantityChange = {product, newQuantity ->
+                    onQuantityChange = { product, newQuantity ->
                         viewModel.updateQuantity(product, newQuantity)
+                        //totalAmount = cartItem.price + deliveryFee - discount
                     }
                 )
 
@@ -55,9 +64,9 @@ fun CartScreen(
                 ShoppingSummary(
                     modifier = Modifier.padding(8.dp),
                     promoCode = promoCode,
-                    subTotal = 58610.00,
-                    deliveryFee = 1500.00,
-                    discount = 3500.00,
+                    subTotal = totalAmount,
+                    deliveryFee = deliveryFee,
+                    discount = discount,
                     onValueChange = { promoCode = it },
                     onClick = {
                         navController.navigate(BottomNavItems.Checkout.route)

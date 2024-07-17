@@ -26,7 +26,6 @@ fun LazyRowWithScrollIndicator(
     viewModel: MainActivityViewModel,
     categoryName: String,
 ) {
-
     val lazyListState = rememberLazyListState()
 
     val coroutineScope = rememberCoroutineScope()
@@ -34,6 +33,7 @@ fun LazyRowWithScrollIndicator(
     val scrollProgress = remember {
         mutableStateOf(0f)
     }
+
 
     //update scroll progress based on lazy list changes
     LaunchedEffect(
@@ -74,12 +74,12 @@ fun LazyRowWithScrollIndicator(
                 .padding(vertical = 8.dp),
             state = lazyListState
         ) {
-            items(products) { product ->
+            items(products, key = { it.id }) { product ->
                 ProductCard(
                     modifier = Modifier,
                     product = product,
                     onAddToCart = {
-                        viewModel.toggleCart(product)
+                            viewModel.toggleCart(product)
                     }
                 )
             }

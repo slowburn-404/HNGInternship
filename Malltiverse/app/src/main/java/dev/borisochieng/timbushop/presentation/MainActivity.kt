@@ -6,6 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,8 +19,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBarItem
@@ -38,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -96,29 +96,21 @@ class MainActivity : ComponentActivity() {
                                     modifier = Modifier
                                         .padding(16.dp),
                                     action = {
-
-                                        Button(
-                                            colors = ButtonColors(
-                                                containerColor = MalltiverseTheme.colorScheme.primary,
-                                                contentColor = MalltiverseTheme.colorScheme.onPrimary,
-                                                disabledContainerColor = Color.Gray,
-                                                disabledContentColor = Color.White
-                                            ),
-                                            onClick = {
-                                                mainActivityViewModel.getProducts(
-                                                    apiKey = API_KEY,
-                                                    organizationID = ORGANIZATION_ID,
-                                                    appId = APP_ID
-                                                )
-                                            }
-                                        ) {
                                             Text(
-                                                text = "Retry",
-                                                style = MalltiverseTheme.typography.labelNormal,
+                                                text = "RETRY",
+                                                style = MalltiverseTheme.typography.body,
+                                                color = MalltiverseTheme.colorScheme.primary,
                                                 modifier = Modifier
                                                     .padding(8.dp)
+                                                    .clickable {
+                                                        mainActivityViewModel.getProducts(
+                                                            apiKey = API_KEY,
+                                                            organizationID = ORGANIZATION_ID,
+                                                            appId = APP_ID
+                                                        )
+                                                    },
+                                                fontWeight = FontWeight.SemiBold
                                             )
-                                        }
                                     }
                                 ) {
                                     Text(text = uiState.errorMessage)

@@ -107,7 +107,7 @@ fun ProductCard(
 
                 Text(
                     modifier = Modifier.padding(horizontal = 8.dp, vertical = 4.dp),
-                    text = "NGN ${product.price}",
+                    text = "₦ ${product.price}",
                     style = MalltiverseTheme.typography.bodySmall,
                     color = colorScheme.primary
                 )
